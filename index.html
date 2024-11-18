@@ -15,15 +15,22 @@
             <button id="logout">Sair</button>
         </div>
     </header>
+
     <main>
-        <section id="login-section">
-            <h2>Login</h2>
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" placeholder="Digite a senha">
-            <button id="botao">Entrar</button>
-            <h3>A senha é: LIBERTADORES</h3>
+        <!-- Seção de Login -->
+        <section id="login-container">
+            <!-- Imagem do escudo do Botafogo apenas no login -->
+            <img src="escudo-botafogo.png" alt="Escudo Botafogo" class="escudo">
+            <form id="login-form">
+                <h1>Login</h1>
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" placeholder="Digite a senha">
+                <button id="botao" type="button">Entrar</button>
+                <h3>A senha é: LIBERTADORES</h3>
+            </form>
         </section>
 
+        <!-- Seção de Atletas (inicialmente oculta) -->
         <section id="atletas-section" style="display: none;">
             <div id="filtros">
                 <button id="filtroMasculino">Masculino</button>
@@ -36,8 +43,7 @@
             </div>
         </section>
     </main>
+
     <script src="script.js" defer></script>
 </body>
 </html>
-
-  

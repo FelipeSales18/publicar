@@ -4,17 +4,33 @@ const url = "https://botafogo-atletas.mange.li/2024-1/";
 // Verifica se o usuário está logado
 const verificaAutenticacao = () => {
     const logado = sessionStorage.getItem('logado');
+    const loginSection = document.getElementById('login-container'); // Altere para "login-container"
+    const atletasSection = document.getElementById('atletas-section');
+
     if (logado === 'sim') {
-        document.getElementById('login-section').style.display = 'none'; // Esconde a área de login
-        document.getElementById('atletas-section').style.display = 'block'; // Mostra os jogadores
+        if (loginSection) loginSection.style.display = 'none'; // Esconde a área de login
+        if (atletasSection) atletasSection.style.display = 'block'; // Mostra os jogadores
     } else {
-        document.getElementById('login-section').style.display = 'block'; // Mostra a área de login
-        document.getElementById('atletas-section').style.display = 'none'; // Esconde os jogadores
+        if (loginSection) loginSection.style.display = 'block'; // Mostra a área de login
+        if (atletasSection) atletasSection.style.display = 'none'; // Esconde os jogadores
     }
 };
 
-// Chama a verificação ao carregar a página
-verificaAutenticacao();
+// Previne o envio do formulário de login
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("login-form");
+    const botaoLogin = document.getElementById("botao");
+
+    if (form) {
+        form.addEventListener("submit", (event) => {
+            event.preventDefault(); // Impede o envio padrão do formulário
+        });
+    }
+
+    if (botaoLogin) {
+        botaoLogin.addEventListener("click", manipulaBotao);
+    }
+});
 
 // Função de autenticação
 const manipulaBotao = () => {
@@ -32,9 +48,6 @@ document.getElementById('logout').onclick = () => {
     sessionStorage.removeItem('logado'); // Remove a autenticação
     verificaAutenticacao(); // Atualiza a exibição da página
 };
-
-// Configura o botão de login
-document.getElementById('botao').onclick = manipulaBotao;
 
 // Função para buscar dados
 const pega_json = async (caminho) => {
