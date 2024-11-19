@@ -149,6 +149,15 @@ article button {
 /* Container do login */
 /* Centralização do login */
 /* Container principal do login */
+/* Garante que o corpo da página ocupa toda a altura da tela */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto', sans-serif; /* Ou qualquer outra fonte personalizada */
+    background-color: #f4f4f4;
+}
+
+/* Garante que o container de login ocupe toda a altura da tela e centralize os elementos */
 #login-container {
     display: flex;
     flex-direction: column; /* Organiza a imagem e o formulário em coluna */
@@ -157,6 +166,10 @@ article button {
     min-height: 100vh; /* Ocupa toda a altura da tela */
     background-color: #f5f5f5; /* Cor de fundo para destaque */
     padding: 20px;
+    box-sizing: border-box; /* Garante que o padding não cause overflow */
+    width: 100%; /* Garante que o container ocupe a largura inteira */
+    max-width: 600px; /* Limita a largura máxima do container */
+    margin: 0 auto; /* Centraliza o container horizontalmente */
 }
 
 /* Estilo da imagem acima do formulário */
@@ -176,6 +189,7 @@ article button {
     max-width: 300px; /* Largura máxima do formulário */
     width: 100%; /* Responsividade */
     text-align: center; /* Centraliza o conteúdo do formulário */
+    margin: 0 auto; /* Garante centralização */
 }
 
 /* Estilo dos inputs e botão no formulário */
@@ -188,6 +202,7 @@ article button {
     border-radius: 5px;
 }
 
+/* Estilo do botão */
 #login-form button {
     background-color: black;
     color: white;
@@ -199,7 +214,7 @@ article button {
     background-color: #333; /* Escurece o botão ao passar o mouse */
 }
 
-/* Ajustes gerais para imagens e textos */
+/* Estilo do título e mensagem de senha */
 #login-form h1 {
     font-size: 24px;
     margin-bottom: 20px;
@@ -210,6 +225,8 @@ article button {
     font-size: 14px;
     color: #555;
 }
+
+/* Ajustes gerais para os cards de atletas */
 article {
     background-color: #ddd;
     border-radius: 5px;
@@ -227,7 +244,7 @@ article img {
     display: block;
 }
 
-/* Centraliza o conteúdo do contêiner */
+/* Estilo do container de atletas */
 .container {
     display: grid;
     grid-template-columns: 1fr; /* Uma coluna por padrão (mobile-first) */
@@ -236,6 +253,7 @@ article img {
     max-width: 90%; /* Limita a largura do contêiner */
     padding: 0 16px;
 }
+
 
 /* Responsividade para telas menores */
 @media (max-width: 768px) {
@@ -391,6 +409,27 @@ article img {
     margin: 0 auto 20px auto; /* Centraliza e dá um espaço abaixo */
 }
 
+/* Estilo para a frase 'Aguarde...' */
+#loading {
+    font-size: 24px;
+    text-align: center;
+    margin-top: 20%;
+}
+
+/* Botões de Sair e Voltar */
+header button {
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+header button:hover {
+    background-color: #333;
+}
 
 
 

@@ -9,19 +9,21 @@ const pega_json = async (caminho) => {
 };
 
 const montaPagina = (dados) => {
-    const body = document.body;
+    const container = document.getElementById("atleta-details");
+    const loading = document.getElementById("loading");
+    loading.style.display = "none"; // Esconde a mensagem "Aguarde..."
 
     // Nome do jogador
     const nome = document.createElement('h1');
     nome.innerHTML = dados.nome;
     nome.classList.add('nome-jogador'); // Adiciona a classe 'nome-jogador'
-    body.appendChild(nome);
+    container.appendChild(nome);
 
     // Imagem do jogador
     const imagem = document.createElement('img');
     imagem.src = dados.imagem;
     imagem.classList.add('imagem-jogador'); // Adiciona a classe 'imagem-jogador'
-    body.appendChild(imagem);
+    container.appendChild(imagem);
 
     // Detalhes do jogador
     const lista_detalhes = document.createElement('ul');
@@ -51,19 +53,7 @@ const montaPagina = (dados) => {
     especialidade.innerHTML = `<strong>Especialidade:</strong> ${dados.especialidade}`;
     lista_detalhes.appendChild(especialidade);
 
-    const detalhes = document.createElement('li');
-    detalhes.innerHTML = `<strong>Detalhes:</strong> ${dados.detalhes}`;
-    lista_detalhes.appendChild(detalhes);
-
-    body.appendChild(lista_detalhes);
-
-    // Botão "Voltar"
-    const voltarBtn = document.createElement('button');
-    voltarBtn.innerHTML = "Voltar";
-    voltarBtn.onclick = () => {
-        window.history.back(); // Volta para a página anterior
-    };
-    body.appendChild(voltarBtn);
+    container.appendChild(lista_detalhes);
 };
 
 // Verifica se o usuário está logado
@@ -72,3 +62,56 @@ if (sessionStorage.getItem('logado')) {
 } else {
     document.body.innerHTML = "<h1>Você precisa estar logado para acessar esse conteúdo</h1>";
 }
+
+// Função para pegar o ID do atleta da URL
+const urlParams = new URLSearchParams(window.location.search);
+const atletaId = urlParams.get('id');
+
+// Função para buscar os dados do atleta
+const pegaDetalhes = async (id) => {
+    const endpoint = `https://botafogo-atletas.mange.li/2024-1/${id}`;
+    try {
+        const resposta = await fetch(endpoint);
+        const atleta = await resposta.json();
+        exibeDetalhes(atleta);
+    } catch (error) {
+        console.error("Erro ao carregar os detalhes:", error);
+    }
+};
+
+// Função para exibir os detalhes do atleta
+const exibeDetalhes = (atleta) => {
+    const container = document.getElementById("atleta-details");
+    const loading = document.getElementById("loading");
+    loading.style.display = "none"; // Esconde a mensagem "Aguarde..."
+
+    // Adiciona "Detalhes" em negrito seguido de ":" antes da frase
+    const detalhesTitulo = document.createElement("p");
+    detalhesTitulo.innerHTML = "<strong>Detalhes:</strong>"; // A palavra "Detalhes" em negrito
+    container.appendChild(detalhesTitulo);
+
+    // Exibe os detalhes do jogador
+    const detalhes = document.createElement("p");
+    detalhes.textContent = atleta.detalhes;
+    container.appendChild(detalhes);
+};
+
+// Redireciona para a tela principal
+document.getElementById("voltar").addEventListener("click", () => {
+    window.location.href = "index.html"; // Ou a URL da página principal
+});
+
+// Redireciona para a tela de login
+document.getElementById("logout").addEventListener("click", () => {
+    sessionStorage.removeItem('logado');
+    window.location.href = "index.html"; // Ou a URL da página de login
+});
+
+// Carrega os detalhes do atleta
+document.addEventListener("DOMContentLoaded", () => {
+    if (atletaId) {
+        pegaDetalhes(atletaId);
+    } else {
+        window.location.href = "index.html"; // Redireciona se o ID não estiver presente
+    }
+});

@@ -10,14 +10,22 @@
     <script src="detalhes.js" defer></script>
 </head>
 <body>
+    <!-- Centralização do título e do botão de sair -->
     <div class="centralizado">
-    <h1>Atletas Botafogo 2024-1</h1>
-    <button class="sair">Sair</button>
-</div>
+        <h1>Atletas Botafogo 2024-1</h1>
+        <button id="voltar">Voltar</button>
+        <button id="logout">Sair</button>
+    </div>
 
-    <p style="font-weight: 600;">Aguarde...</p>
+    <!-- Mensagem de carregamento -->
+    <p id="loading" style="font-weight: 600; text-align: center; margin-top: 20%;">Aguarde...</p>
+
+    <!-- Contêiner onde os detalhes do atleta serão exibidos -->
+    <main id="detalhes-container">
+        <section id="atleta-details">
+            <!-- Detalhes do atleta serão carregados aqui -->
+        </section>
+    </main>
+
 </body>
 </html>
-
-
-
