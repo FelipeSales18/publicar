@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atletas Botafogo 2024-1</title>
+    
+    <!-- Adicionando o Favicon -->
+    <link rel="stylesheet" href="estilo.css">
+    <link href="style.css" rel="stylesheet">
+    <script src="md5-min.js"></script>
+    <script src="codigo.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <h1>Atletas Botafogo 2024-1</h1>
+            <button id="logout">Sair</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Seção de Login -->
+        <section id="login-container">
+            <!-- Imagem do escudo do Botafogo apenas no login -->
+            <img src="escudo-botafogo.png" alt="Escudo Botafogo" class="escudo">
+            <form id="login-form">
+                <h1>Login</h1>
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" placeholder="Digite a senha">
+                <button id="botao" type="button">Entrar</button>
+                <h3>A senha é: LIBERTADORES</h3>
+            </form>
+        </section>
+
+        <!-- Seção de Atletas (inicialmente oculta) -->
+        <section id="atletas-section" style="display: none;">
+            <div id="filtros">
+                <button id="filtroMasculino">Masculino</button>
+                <button id="filtroFeminino">Feminino</button>
+                <button id="filtroTodos">Elenco Completo</button>
+                <input type="text" id="search" placeholder="BUSQUE POR NOME">
+            </div>
+            <div id="container" class="container">
+                <!-- Cards de atletas serão renderizados aqui -->
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
