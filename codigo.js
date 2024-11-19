@@ -134,19 +134,59 @@ const carregaAtletas = (endpoint) => {
     });
 };
 
-// Adiciona a lógica para filtros e busca
-document.getElementById("filtroTodos").onclick = () => {
-    carregaAtletas(`${url}all`);
+// Função genérica para buscar jogadores e renderizar na lista
+function fetchAndRender(url, ulElement) {
+    // Limpa a lista antes de carregar novos jogadores
+    ulElement.innerHTML = '<li>Carregando...</li>';
+
+    // Realiza a chamada à API
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao carregar os dados.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Remove mensagem de carregando
+            ulElement.innerHTML = '';
+
+            // Adiciona cada jogador na lista
+            data.forEach(player => {
+                const li = document.createElement('li');
+                li.textContent = `${player.nome} - ${player.posicao}`;
+                ulElement.appendChild(li);
+            });
+        })
+        .catch(error => {
+            ulElement.innerHTML = '<li>Erro ao carregar os jogadores.</li>';
+            console.error(error);
+        });
+}
+
+// Função para aplicar filtros
+const aplicarFiltro = (categoria) => {
+    const urlCategoria = `${url}${categoria}.json`;
+    fetchAndRender(urlCategoria, document.getElementById(categoria));
+    document.getElementById(categoria).style.display = 'block';
+    ['all', 'masculino', 'feminino'].forEach(id => {
+        if (id !== categoria) {
+            document.getElementById(id).style.display = 'none';
+        }
+    });
 };
 
-document.getElementById("filtroMasculino").onclick = () => {
-    carregaAtletas(`${url}masculino`);
-};
+// Eventos para os botões
+document.getElementById('filtroTodos').addEventListener('click', () => aplicarFiltro('all'));
+document.getElementById('filtroMasculino').addEventListener('click', () => aplicarFiltro('masculino'));
+document.getElementById('filtroFeminino').addEventListener('click', () => aplicarFiltro('feminino'));
 
-document.getElementById("filtroFeminino").onclick = () => {
-    carregaAtletas(`${url}feminino`);
-};
+// Busca e exibe os atletas masculinos por padrão ao carregar a página
+pega_json(`${url}masculino`).then((r) => {
+    r.forEach((ele) => container.appendChild(montaCard(ele)));
+});
 
+// Busca e exibe os atletas quando um termo de busca é digitado
 document.getElementById("search").oninput = (e) => {
     const termo = e.target.value.toLowerCase();
     const atletas = document.querySelectorAll("article");
@@ -155,8 +195,3 @@ document.getElementById("search").oninput = (e) => {
         atleta.style.display = nome.includes(termo) ? "block" : "none";
     });
 };
-
-// Busca e exibe os atletas masculinos por padrão ao carregar a página
-pega_json(`${url}masculino`).then((r) => {
-    r.forEach((ele) => container.appendChild(montaCard(ele)));
-});
