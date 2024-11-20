@@ -432,6 +432,74 @@ header button:hover {
 }
 
 
+/* Estilo da mensagem de carregamento */
+.mensagem-carregando {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Container dos cartões */
+#container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 cartões por linha */
+    gap: 20px; /* Espaçamento entre os cartões */
+    padding: 20px;
+    justify-content: center;
+    max-width: 1400px; /* Largura máxima do contêiner */
+    margin: 0 auto; /* Centraliza o contêiner na página */
+}
+
+#container article {
+    background-color: #333; /* Cor de fundo dos cartões */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+#container article:hover {
+    transform: scale(1.05); /* Aumenta o cartão levemente ao passar o mouse */
+}
+
+#container img {
+    width: 100%; /* Imagem ocupa a largura do cartão */
+    height: auto;
+    border-radius: 5px;
+}
+
+.botao-saiba-mais {
+    background-color: #ffc107;
+    color: black;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.botao-saiba-mais:hover {
+    background-color: #e0a800; /* Escurece o botão ao passar o mouse */
+}
+
+  
+  /* Centralizando o texto "Aguarde..." */
+  .mensagem-carregando {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    color: #ffd700; /* Amarelo */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
 
 /* Ajustes para telas acima de 768px */
 @media (min-width: 769px) {

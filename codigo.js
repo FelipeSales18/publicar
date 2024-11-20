@@ -62,14 +62,15 @@ const pega_json = async (endpoint) => {
 };
 
 // Referência ao container
+// Referência ao container
 const container = document.getElementById("container");
 
-// Monta os cards de atletas
+// Função para montar os cartões de atletas
 const montaCard = (atleta) => {
     const cartao = document.createElement('article');
     const nome = document.createElement("h1");
     const imagem = document.createElement("img");
-    const descri = document.createElement("p");
+    const botaoSaibaMais = document.createElement("button"); // Botão "Saiba mais"
 
     nome.innerHTML = atleta.nome;
     cartao.appendChild(nome);
@@ -78,30 +79,30 @@ const montaCard = (atleta) => {
     imagem.alt = atleta.nome;
     cartao.appendChild(imagem);
 
-    descri.innerHTML = atleta.detalhes;
-    cartao.appendChild(descri);
 
-    // Navega para a página de detalhes ao clicar no cartão
-    cartao.onclick = () => {
+    botaoSaibaMais.innerHTML = "Saiba mais";
+    botaoSaibaMais.classList.add("botao-saiba-mais");
+    botaoSaibaMais.onclick = () => {
         const url = `detalhes.html?id=${atleta.id}`;
         window.location.href = url;
     };
+    cartao.appendChild(botaoSaibaMais);
 
     return cartao;
 };
 
-// Função para carregar atletas de uma categoria
-const carregaAtletas = (categoria) => {
-    const endpoint = `${urlBase}${categoria}`;
-    pega_json(endpoint)
-        .then(atletas => {
-            container.innerHTML = ""; // Limpa o container
-            atletas.forEach(atleta => container.appendChild(montaCard(atleta)));
-        })
-        .catch(err => {
-            console.error("Erro ao carregar atletas:", err);
-            container.innerHTML = "<p>Erro ao carregar atletas.</p>";
-        });
+// Função para carregar atletas com a mensagem "Aguarde..."
+const carregaAtletas = async (categoria) => {
+    try {
+        const endpoint = `${urlBase}${categoria}`;
+        container.innerHTML = "<p class='mensagem-carregando'>Aguarde...</p>"; // Mensagem de carregamento
+        const atletas = await pega_json(endpoint);
+        container.innerHTML = ""; // Limpa o container após o carregamento
+        atletas.forEach(atleta => container.appendChild(montaCard(atleta)));
+    } catch (err) {
+        console.error("Erro ao carregar atletas:", err);
+        container.innerHTML = "<p>Erro ao carregar atletas. Tente novamente mais tarde.</p>";
+    }
 };
 
 // Configuração dos filtros
@@ -109,8 +110,9 @@ document.getElementById('filtroTodos').addEventListener('click', () => carregaAt
 document.getElementById('filtroMasculino').addEventListener('click', () => carregaAtletas('masculino'));
 document.getElementById('filtroFeminino').addEventListener('click', () => carregaAtletas('feminino'));
 
-// Inicializa a página sem exibir atletas
+// Inicialização da página
 document.addEventListener("DOMContentLoaded", () => {
     verificaAutenticacao();
-    container.innerHTML = ""; // Garante que nada será exibido ao carregar a página
+    container.innerHTML = ""; // Garante que o container está vazio inicialmente
 });
+

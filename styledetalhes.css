@@ -2,3 +2,111 @@ body {
     background-color: grey;
     text-align: center;
 }
+
+/* Estilo geral da página */
+body {
+    background-color: #222; /* Fundo escuro */
+    color: #fff; /* Texto claro */
+    font-family: 'Lolita One', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Centraliza o título e os botões no topo */
+.centralizado {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.centralizado h1 {
+    font-size: 2.5rem;
+    color: #ffc107; /* Dourado */
+    margin-bottom: 15px;
+}
+
+.centralizado button {
+    background-color: #ffc107;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin: 5px;
+}
+
+.centralizado button:hover {
+    background-color: #e0a800;
+}
+
+/* Mensagem de carregamento */
+#loading {
+    color: #ffc107;
+    font-size: 1.5rem;
+}
+
+/* Contêiner principal */
+#detalhes-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    width: 90%;
+    background-color: #333; /* Fundo do contêiner */
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    display: none; /* Inicialmente oculto */
+}
+
+/* Imagem do atleta */
+#detalhes-container img {
+    width: 100%; /* Imagem ocupa a largura do contêiner */
+    max-height: 400px;
+    object-fit: cover; /* Ajusta a imagem sem distorcer */
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* Nome do atleta */
+#atleta-details h2 {
+    font-size: 2rem;
+    color: #ffc107; /* Cor dourada */
+    margin: 15px 0;
+}
+
+/* Descrição do atleta */
+#atleta-details p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin: 15px 0;
+    text-align: center;
+}
+
+/* Botão Voltar no container */
+#voltar {
+    margin-top: 20px;
+    align-self: center;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #detalhes-container {
+        padding: 10px;
+    }
+
+    #atleta-details h2 {
+        font-size: 1.5rem;
+    }
+
+    #atleta-details p {
+        font-size: 1rem;
+    }
+}

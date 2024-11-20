@@ -1,117 +1,113 @@
 const url = "https://botafogo-atletas.mange.li/2024-1/";
 const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const atletaId = params.get('id');
 
-const pega_json = async (caminho) => {
-    const resposta = await fetch(caminho);
-    const dados = await resposta.json();
-    return dados;
-};
-
-const montaPagina = (dados) => {
+// Função para buscar e exibir os detalhes do atleta
+const carregaDetalhes = async () => {
+    const loadingMessage = document.getElementById('loading');
+    const detalhesContainer = document.getElementById('detalhes-container');
     const container = document.getElementById("atleta-details");
-    const loading = document.getElementById("loading");
-    loading.style.display = "none"; // Esconde a mensagem "Aguarde..."
 
-    // Nome do jogador
-    const nome = document.createElement('h1');
-    nome.innerHTML = dados.nome;
-    nome.classList.add('nome-jogador'); // Adiciona a classe 'nome-jogador'
-    container.appendChild(nome);
+    try {
+        // Mostra a mensagem de carregamento
+        loadingMessage.style.display = 'block';
 
-    // Imagem do jogador
-    const imagem = document.createElement('img');
-    imagem.src = dados.imagem;
-    imagem.classList.add('imagem-jogador'); // Adiciona a classe 'imagem-jogador'
-    container.appendChild(imagem);
+        // Faz a requisição para o endpoint
+        const response = await fetch(`${url}${atletaId}`);
+        if (!response.ok) throw new Error('Erro ao carregar os detalhes do atleta.');
+        const atleta = await response.json();
 
-    // Detalhes do jogador
-    const lista_detalhes = document.createElement('ul');
-    lista_detalhes.classList.add('detalhes-jogador'); // Adiciona a classe 'detalhes-jogador'
+        // Verifica se os dados estão sendo recebidos
+        console.log(atleta);
 
-    const n_jogos = document.createElement('li');
-    n_jogos.innerHTML = `<strong>Jogos:</strong> ${dados.n_jogos}`;
-    lista_detalhes.appendChild(n_jogos);
+        // Esconde a mensagem de carregamento
+        loadingMessage.style.display = 'none';
+        detalhesContainer.style.display = 'flex';
 
-    const posicao = document.createElement('li');
-    posicao.innerHTML = `<strong>Posição:</strong> ${dados.posicao}`;
-    lista_detalhes.appendChild(posicao);
+        // Contêiner flex para organizar a imagem à esquerda e os detalhes à direita
+        const atletaInfo = document.createElement('div');
+        atletaInfo.classList.add('atleta-info');
+        atletaInfo.style.display = 'flex';
+        atletaInfo.style.alignItems = 'center'; // Alinha verticalmente
 
-    const altura = document.createElement('li');
-    altura.innerHTML = `<strong>Altura:</strong> ${dados.altura}`;
-    lista_detalhes.appendChild(altura);
+        // Imagem do jogador
+        const imagem = document.createElement('img');
+        imagem.src = atleta.imagem;
+        imagem.alt = atleta.nome;
+        imagem.classList.add('imagem-jogador');
+        imagem.style.width = '200px'; // Ajusta o tamanho da imagem
+        imagem.style.height = 'auto'; // Mantém a proporção da imagem
 
-    const naturalidade = document.createElement('li');
-    naturalidade.innerHTML = `<strong>Naturalidade:</strong> ${dados.naturalidade}`;
-    lista_detalhes.appendChild(naturalidade);
+        // Detalhes do jogador à direita
+        const detalhes = document.createElement('div');
+        detalhes.style.marginLeft = '20px'; // Espaço entre a imagem e os detalhes
 
-    const nascimento = document.createElement('li');
-    nascimento.innerHTML = `<strong>Nascimento:</strong> ${dados.nascimento}`;
-    lista_detalhes.appendChild(nascimento);
+        // Nome do jogador
+        const nome = document.createElement('h2');
+        nome.innerHTML = atleta.nome;
+        nome.classList.add('nome-jogador');
+        detalhes.appendChild(nome);
 
-    const especialidade = document.createElement('li');
-    especialidade.innerHTML = `<strong>Especialidade:</strong> ${dados.especialidade}`;
-    lista_detalhes.appendChild(especialidade);
+        // Lista de detalhes adicionais
+        const lista_detalhes = document.createElement('ul');
 
-    container.appendChild(lista_detalhes);
+        const n_jogos = document.createElement('li');
+        n_jogos.innerHTML = `<strong>Jogos:</strong> ${atleta.n_jogos}`;
+        lista_detalhes.appendChild(n_jogos);
+
+        const posicao = document.createElement('li');
+        posicao.innerHTML = `<strong>Posição:</strong> ${atleta.posicao}`;
+        lista_detalhes.appendChild(posicao);
+
+        const altura = document.createElement('li');
+        altura.innerHTML = `<strong>Altura:</strong> ${atleta.altura}`;
+        lista_detalhes.appendChild(altura);
+
+        const naturalidade = document.createElement('li');
+        naturalidade.innerHTML = `<strong>Naturalidade:</strong> ${atleta.naturalidade}`;
+        lista_detalhes.appendChild(naturalidade);
+
+        const nascimento = document.createElement('li');
+        nascimento.innerHTML = `<strong>Nascimento:</strong> ${atleta.nascimento}`;
+        lista_detalhes.appendChild(nascimento);
+
+        
+
+        detalhes.appendChild(lista_detalhes);
+
+        // Verifica e exibe a descrição do atleta
+        const descricao = document.createElement('p');
+        descricao.innerHTML = `<strong>Descrição:</strong> ${atleta.detalhes || 'Descrição não disponível'}`;
+        descricao.classList.add('descricao-atleta');
+        detalhes.appendChild(descricao);
+
+        // Adiciona a imagem e os detalhes no contêiner
+        atletaInfo.appendChild(imagem);
+        atletaInfo.appendChild(detalhes);
+
+        // Adiciona o contêiner de informações ao container principal
+        container.appendChild(atletaInfo);
+
+    } catch (error) {
+        console.error(error);
+        loadingMessage.innerHTML = 'Erro ao carregar os detalhes. Tente novamente.';
+    }
 };
 
 // Verifica se o usuário está logado
 if (sessionStorage.getItem('logado')) {
-    pega_json(`${url}${id}`).then((r) => montaPagina(r));
+    carregaDetalhes(); // Carrega os detalhes do atleta
 } else {
     document.body.innerHTML = "<h1>Você precisa estar logado para acessar esse conteúdo</h1>";
 }
 
-// Função para pegar o ID do atleta da URL
-const urlParams = new URLSearchParams(window.location.search);
-const atletaId = urlParams.get('id');
-
-// Função para buscar os dados do atleta
-const pegaDetalhes = async (id) => {
-    const endpoint = `https://botafogo-atletas.mange.li/2024-1/${id}`;
-    try {
-        const resposta = await fetch(endpoint);
-        const atleta = await resposta.json();
-        exibeDetalhes(atleta);
-    } catch (error) {
-        console.error("Erro ao carregar os detalhes:", error);
-    }
-};
-
-// Função para exibir os detalhes do atleta
-const exibeDetalhes = (atleta) => {
-    const container = document.getElementById("atleta-details");
-    const loading = document.getElementById("loading");
-    loading.style.display = "none"; // Esconde a mensagem "Aguarde..."
-
-    // Adiciona "Detalhes" em negrito seguido de ":" antes da frase
-    const detalhesTitulo = document.createElement("p");
-    detalhesTitulo.innerHTML = "<strong>Detalhes:</strong>"; // A palavra "Detalhes" em negrito
-    container.appendChild(detalhesTitulo);
-
-    // Exibe os detalhes do jogador
-    const detalhes = document.createElement("p");
-    detalhes.textContent = atleta.detalhes;
-    container.appendChild(detalhes);
-};
-
-// Redireciona para a tela principal
-document.getElementById("voltar").addEventListener("click", () => {
-    window.location.href = "index.html"; // Ou a URL da página principal
+// Função para sair (Logout)
+document.getElementById('logout').addEventListener('click', () => {
+    sessionStorage.removeItem('logado'); // Remove o estado de autenticação
+    window.location.href = 'index.html'; // Redireciona para a página inicial
 });
 
-// Redireciona para a tela de login
-document.getElementById("logout").addEventListener("click", () => {
-    sessionStorage.removeItem('logado');
-    window.location.href = "index.html"; // Ou a URL da página de login
-});
-
-// Carrega os detalhes do atleta
-document.addEventListener("DOMContentLoaded", () => {
-    if (atletaId) {
-        pegaDetalhes(atletaId);
-    } else {
-        window.location.href = "index.html"; // Redireciona se o ID não estiver presente
-    }
+// Função para voltar
+document.getElementById('voltar').addEventListener('click', () => {
+    window.history.back(); // Volta para a página anterior
 });
