@@ -6,10 +6,14 @@ const verificaAutenticacao = () => {
     const logado = sessionStorage.getItem('logado');
     const loginSection = document.getElementById('login-container');
     const atletasSection = document.getElementById('atletas-section');
+    const loadingMessage = document.getElementById('loading');
 
     if (logado === 'sim') {
         if (loginSection) loginSection.style.display = 'none';
-        if (atletasSection) atletasSection.style.display = 'block';
+        if (atletasSection) {
+            atletasSection.style.display = 'block';
+            loadingMessage.style.display = 'none';
+        }
     } else {
         if (loginSection) loginSection.style.display = 'block';
         if (atletasSection) atletasSection.style.display = 'none';
@@ -62,8 +66,8 @@ const pega_json = async (endpoint) => {
 };
 
 // Referência ao container
-// Referência ao container
 const container = document.getElementById("container");
+const loadingMessage = document.getElementById("loading");
 
 // Função para montar os cartões de atletas
 const montaCard = (atleta) => {
@@ -78,7 +82,6 @@ const montaCard = (atleta) => {
     imagem.src = atleta.imagem;
     imagem.alt = atleta.nome;
     cartao.appendChild(imagem);
-
 
     botaoSaibaMais.innerHTML = "Saiba mais";
     botaoSaibaMais.classList.add("botao-saiba-mais");
@@ -95,12 +98,14 @@ const montaCard = (atleta) => {
 const carregaAtletas = async (categoria) => {
     try {
         const endpoint = `${urlBase}${categoria}`;
-        container.innerHTML = "<p class='mensagem-carregando'>Aguarde...</p>"; // Mensagem de carregamento
+        loadingMessage.style.display = "flex"; // Mostra a mensagem "Aguarde..."
+        container.innerHTML = ""; // Limpa o container
         const atletas = await pega_json(endpoint);
-        container.innerHTML = ""; // Limpa o container após o carregamento
+        loadingMessage.style.display = "none"; // Oculta a mensagem após o carregamento
         atletas.forEach(atleta => container.appendChild(montaCard(atleta)));
     } catch (err) {
         console.error("Erro ao carregar atletas:", err);
+        loadingMessage.style.display = "none";
         container.innerHTML = "<p>Erro ao carregar atletas. Tente novamente mais tarde.</p>";
     }
 };
@@ -115,4 +120,3 @@ document.addEventListener("DOMContentLoaded", () => {
     verificaAutenticacao();
     container.innerHTML = ""; // Garante que o container está vazio inicialmente
 });
-

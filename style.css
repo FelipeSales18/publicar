@@ -439,11 +439,17 @@ article img {
 }
 
 .carregando {
-    display: flex;
+    display: none; /* Oculto por padrão */
     justify-content: center;
     align-items: center;
+    position: fixed; /* Para que cubra a tela toda */
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100vh;
+    background: rgba(255, 255, 255, 0.8); /* Fundo semitransparente */
     font-size: 2rem;
     font-weight: bold;
     color: #333;
+    z-index: 9999; /* Para ficar acima de outros elementos */
 }
